@@ -1,1 +1,1 @@
-# MovieBookingApplication
+# Movie Booking Application (Spring Boot)
