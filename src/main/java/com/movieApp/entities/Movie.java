@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,6 +53,19 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
     private List<Show> shows = new ArrayList<>();
+    
+    @OneToOne(mappedBy = "movieId",cascade = CascadeType.ALL)
+    private MoviePoster moviePoster;
+    
+    
+
+	public MoviePoster getMoviePoster() {
+		return moviePoster;
+	}
+
+	public void setMoviePoster(MoviePoster moviePoster) {
+		this.moviePoster = moviePoster;
+	}
 
 	public Integer getId() {
 		return id;
@@ -116,6 +130,14 @@ public class Movie {
 	public void setShows(List<Show> shows) {
 		this.shows = shows;
 	}
+
+	@Override
+	public String toString() {
+		return "Movie [id=" + id + ", movieName=" + movieName + ", duration=" + duration + ", rating=" + rating
+				+ ", releaseDate=" + releaseDate + ", genre=" + genre + ", language=" + language + ", shows=" + shows
+				+ ", moviePoster=" + moviePoster + "]";
+	}
     
+	
 }
 

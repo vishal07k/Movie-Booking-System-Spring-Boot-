@@ -16,7 +16,26 @@ public class MovieRequest {
 	private Date releaseDate;
 	private Genre genre;
 	private Language language;
+	private String adminEmail;
 	
+	private int id;
+	
+	
+	
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getAdminEmail() {
+		return adminEmail;
+	}
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
 	public String getMovieName() {
 		return movieName;
 	}
@@ -52,6 +71,11 @@ public class MovieRequest {
 	}
 	public void setLanguage(Language language) {
 		this.language = language;
+	}
+	@Override
+	public String toString() {
+		return "MovieRequest [movieName=" + movieName + ", duration=" + duration + ", rating=" + rating
+				+ ", releaseDate=" + releaseDate + ", genre=" + genre + ", language=" + language + "]";
 	}
 	
 }

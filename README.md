@@ -1,1 +1,2 @@
-# Movie Booking Application (Spring Boot)
+# Movie Booking System (Spring boot)
+

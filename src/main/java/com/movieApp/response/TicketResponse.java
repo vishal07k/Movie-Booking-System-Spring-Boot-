@@ -64,6 +64,12 @@ public class TicketResponse {
 	public void setTotalPrice(Integer totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+	@Override
+	public String toString() {
+		return "TicketResponse [time=" + time + ", date=" + date + ", movieName=" + movieName + ", theaterName="
+				+ theaterName + ", address=" + address + ", bookedSeats=" + bookedSeats + ", totalPrice=" + totalPrice
+				+ "]";
+	}
     
     
 }

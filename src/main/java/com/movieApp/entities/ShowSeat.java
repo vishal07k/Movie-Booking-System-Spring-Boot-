@@ -84,5 +84,11 @@ public class ShowSeat {
 	public void setShow(Show show) {
 		this.show = show;
 	}
+
+	@Override
+	public String toString() {
+		return "ShowSeat [id=" + id + ", seatNo=" + seatNo + ", seatType=" + seatType + ", price=" + price
+				+ ", isAvailable=" + isAvailable + ", isFoodContains=" + isFoodContains + ", show=" + show + "]";
+	}
     
 }

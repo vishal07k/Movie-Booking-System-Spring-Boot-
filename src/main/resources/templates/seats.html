@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .navbar {
+            background-color: red;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .seat-selection {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 40px); /* 10 columns */
+            grid-gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        .seat.selected {
+            background-color: green;
+            color: white;
+        }
+
+        .seat.booked {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        .seat-label {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .book-btn {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .book-btn:hover {
+            background-color: green;
+        }
+
+        .seat-info {
+            margin-top: 20px;
+        }
+
+        .seat-info ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .seat-info li {
+            display: inline-block;
+            margin: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="user-info">
+            <span>Welcome, <span>Demo</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#booking">Book Show</a>
+            <a href="#">Booking History</a>
+        </div>
+    </div>
+
+    <!-- Seat Selection -->
+    <div class="seat-selection" id="seat-selection">
+        <h2>Select Seats for the Show: <span th:text="${Ticket.getShowId()}"></span></h2>
+
+        <!-- Seat Layout -->
+        <div class="seat-grid">
+            <!-- Loop through all seats passed from the controller -->
+            <div class="seat" 
+                 th:each="seat : ${Seats}"
+                 th:id="${seat.getId()}"
+                 th:classappend="${seat.getIsAvailable()} ? 'available' : 'booked'"
+                 th:onclick="${seat.getIsAvailable()} ? 'selectSeat(' + ${seat.getId()} + ')' : ''" 
+                 th:title="${seat.getIsAvailable()} ? 'Click to select this seat' : 'This seat is booked'">
+                <span th:text="${seat.getSeatNo()}"></span>
+            </div>
+        </div>
+
+        <!-- Selected Seats Info -->
+        <div class="seat-info">
+            <p><strong>Selected Seats:</strong></p>
+            <ul id="selected-seats">
+                <!-- Selected seats will be dynamically added here -->
+            </ul>
+           <!--  <p>Total Price: $<span id="total-price">0</span></p> -->
+        </div>
+
+        <!-- Booking Button -->
+        <form method="POST" th:action="@{/bookseats}" th:object="${TicketRequest}">
+            <input type="hidden" name="showId" th:value="${Ticket.getShowId()}">
+            <input type="hidden" name="movieId" th:value="${Ticket.getShowId()}">
+            <input type="hidden" name="userId" th:value="${Ticket.getUserId()}">
+            <input type="hidden" name="requestSeats" id="selectedSeatsInput">
+            <button class="book-btn" id="book-btn" type="submit" disabled>Book Now</button>
+        </form>
+    </div>
+
+    <script>
+       // Function to select a seat and update the list of selected seats
+let selectedSeats = [];
+
+function selectSeat(seatId) {
+    const seat = document.getElementById(seatId);
+    if (seat.classList.contains('selected')) {
+        seat.classList.remove('selected');
+        selectedSeats = selectedSeats.filter(id => id !== seatId);
+    } else {
+        seat.classList.add('selected');
+        selectedSeats.push(seatId);
+    }
+    updateSelectedSeats();
+}
+
+// Update the displayed list of selected seats and the input field
+function updateSelectedSeats() {
+    const selectedSeatsList = document.getElementById('selected-seats');
+    selectedSeatsList.innerHTML = ''; // Clear the list
+    selectedSeats.forEach(seatId => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Seat ${seatId}`;
+        selectedSeatsList.appendChild(listItem);
+    });
+
+    // Update the hidden input field with selected seats
+    document.getElementById('selectedSeatsInput').value = selectedSeats.join(',');
+
+    // Enable/disable the book button based on selection
+    document.getElementById('book-btn').disabled = selectedSeats.length === 0;
+}
+
+    </script>
+
+</body>
+</html>

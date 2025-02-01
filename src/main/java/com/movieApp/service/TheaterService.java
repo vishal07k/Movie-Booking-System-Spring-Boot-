@@ -90,4 +90,11 @@ public class TheaterService {
 
 		return "Theater Seats have been added successfully";
 	}
+	
+	public List<Theater> getAllTheaters(){
+		
+		List<Theater> theaters = theaterRepository.findAll();
+		
+		return theaters;
+	}
 }

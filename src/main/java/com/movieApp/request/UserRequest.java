@@ -1,11 +1,16 @@
 package com.movieApp.request;
 
+import java.util.Collection;
+
+/*import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;*/
+
 import com.movieApp.enums.Gender;
 
 import lombok.Data;
 
 @Data
-public class UserRequest {
+public class UserRequest /* implements UserDetails */{
 
     private String name;
     private Integer age;
@@ -64,5 +69,19 @@ public class UserRequest {
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
+	@Override
+	public String toString() {
+		return "UserRequest [name=" + name + ", age=" + age + ", address=" + address + ", mobileNo=" + mobileNo
+				+ ", emailId=" + emailId + ", gender=" + gender + ", roles=" + roles + ", password=" + password + "]";
+	}
+	/*
+	 * @Override public Collection<? extends GrantedAuthority> getAuthorities() {
+	 * 
+	 * return null; }
+	 * 
+	 * @Override public String getUsername() {
+	 * 
+	 * return emailId; }
+	 */
     
 }

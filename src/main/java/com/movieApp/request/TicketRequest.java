@@ -6,12 +6,26 @@ import java.util.List;
 
 @Data
 public class TicketRequest {
+	
+	private Integer movieId;
     private Integer showId;
     private Integer userId;
     private List<String> requestSeats;
 	public Integer getShowId() {
 		return showId;
 	}
+	
+	
+	public Integer getMovieId() {
+		return movieId;
+	}
+
+
+	public void setMovieId(Integer movieId) {
+		this.movieId = movieId;
+	}
+
+
 	public void setShowId(Integer showId) {
 		this.showId = showId;
 	}
@@ -26,6 +40,10 @@ public class TicketRequest {
 	}
 	public void setRequestSeats(List<String> requestSeats) {
 		this.requestSeats = requestSeats;
+	}
+	@Override
+	public String toString() {
+		return "TicketRequest [showId=" + showId + ", userId=" + userId + ", requestSeats=" + requestSeats + "]";
 	}
     
 }

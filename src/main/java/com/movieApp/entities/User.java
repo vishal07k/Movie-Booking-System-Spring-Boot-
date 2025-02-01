@@ -124,6 +124,13 @@ public class User {
 	public void setTicketList(List<Ticket> ticketList) {
 		this.ticketList = ticketList;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", age=" + age + ", address=" + address + ", gender=" + gender
+				+ ", mobileNo=" + mobileNo + ", emailId=" + emailId + ", password=" + password + ", roles=" + roles
+				+ ", ticketList=" + ticketList + "]";
+	}
     
 }
 

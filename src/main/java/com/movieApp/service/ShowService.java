@@ -1,5 +1,6 @@
 package com.movieApp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import com.movieApp.exceptions.ShowDoesNotExists;
 import com.movieApp.exceptions.TheaterDoesNotExists;
 import com.movieApp.repository.MovieRepository;
 import com.movieApp.repository.ShowRepository;
+import com.movieApp.repository.ShowSeatsRepository;
 import com.movieApp.repository.TheaterRepository;
 import com.movieApp.request.ShowRequest;
 import com.movieApp.request.ShowSeatRequest;
@@ -106,5 +108,75 @@ public class ShowService {
 		showRepository.save(show);
 
 		return "Show seats have been associated successfully";
+	}
+	
+	public List<Show> getShowsByDate(){
+		
+		List<Show> shows = showRepository.findAll();
+		
+		return shows;
+		
+	}
+	
+	public List<Show> getShowsByMovieId(int MovieId){
+		
+	return showRepository.getAllShowsOfMovie(MovieId);
+	}
+	
+	@Autowired
+	ShowSeatsRepository showSeatsRepository;
+	
+	public List<ShowSeat> getAllSeatsByShow(int showId){
+		List<ShowSeat> seats = showSeatsRepository.findAll();
+		List<ShowSeat> seatsByShow = new ArrayList<>();
+		
+		for(ShowSeat s : seats) {
+			if(s.getShow().getShowId() == showId) {
+				seatsByShow.add(s);
+			}
+		}
+		
+		return seatsByShow;
+	}
+	
+	public  int totalPrice = 0;
+	
+	public List<String> getOriginalName(List<String> reserveSeats){
+		
+		List<String> list = new ArrayList<>();
+		
+		List<ShowSeat> seats = showSeatsRepository.findAll();
+		
+		List<ShowSeat> Original = new ArrayList<>();
+		
+		
+		
+		for(String strId : reserveSeats) {
+			int id = Integer.parseInt(strId);
+			System.out.println(id);
+			Optional<ShowSeat> seat = showSeatsRepository.findById(id);
+			if(seat.isPresent()) {
+				Original.add(seat.get());
+				
+				totalPrice += seat.get().getPrice();
+			}
+			else {
+				totalPrice = 0;
+			}
+			
+		}
+		
+		for(ShowSeat seat1 : Original) {
+			
+			list.add(seat1.getSeatNo());
+			
+		}
+		
+		return list;
+		
+	}
+	
+	public Show getShowById(int id) {
+		return showRepository.findById(id).get();
 	}
 }

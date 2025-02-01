@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: red;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .user-info img {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .navbar .user-info span {
+            margin-right: 20px;
+        }
+
+        .navbar .logout-btn {
+            background-color: red;
+            border: none;
+            padding: 8px 16px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .navbar .logout-btn:hover {
+            background-color: green;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            padding: 20px;
+        }
+
+        .dashboard h2 {
+            color: #333;
+        }
+
+        .form-container {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            padding-right: 10px;
+        }
+
+        .form-container form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container form input, .form-container form select, .form-container form button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .form-container form button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container form button:hover {
+            background-color: green;
+        }
+
+        /* Booking History Table */
+        .ticket-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        .ticket-table th, .ticket-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .ticket-table th {
+            background-color: #f4f4f4;
+        }
+
+        .ticket-table tr:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="user-info">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVLFWnf4SYwt0w_Ll2IkFWzcAym4F28yboqQ&s" alt="Admin Icon">
+            <span th:text="${USER.getName()}"></span>
+        </div>
+        <div class="nav-links">
+            <a href="#add-movie">Add Movie</a>
+            <a href="#add-theater">Add Theater</a>
+            <a href="#add-show">Add Show</a>
+            <a href="#ticket-bookings">Ticket Bookings</a>
+        </div>
+        <button class="logout-btn" style="background-color: white;"> <a th:href="@{/login}" style="color: red; text-decoration: none;"> LogOut</a></button>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" th:with="id = ${USER.getEmailId()}">
+        <h2>Admin Dashboard</h2>
+
+        <!-- Add Movie Form -->
+        <div class="form-container" id="add-movie">
+            <form id="movie-form" th:action="@{/movie/addNew}" th:object="${movieRequest}"  th:method="post">
+                <h3>Add New Movie</h3>
+                <input type="text" name="adminEmail" th:value="${id}" style="display: none;">
+                <input type="text" name="movieName" id="movieName" placeholder="Movie Name" required>
+                <input type="number" name="rating" id="rating" placeholder="Rating (1 - 10)">
+                <input type="number" name="duration" id="duration" placeholder="Duration (in minutes)" required>
+                <input type="date" name="releaseDate" id="releaseDate">
+                 <input type="text" name="genre" id="movie-genre" placeholder="Movie Genre" required>
+                <label for="language"> Language </label> <select name="language">
+                <option value="ENGLISH"> English</option>
+                <option value="HINDI"> Hindi</option>
+                <option value="TELUGU"> Telugu</option>
+                <option value="TAMIL"> Tamil</option>
+                <option value="MARATHI"> Marathi</option>
+                <option value="PUNJAB"> Punjabi</option>
+                <option value="KANNADA"> Kannada</option>
+                </select>
+                <button type="submit">Add Movie</button>
+            </form>
+           <div th:if="${param.success}">
+            <p> Movie Added Successfully !</p>
+            </div> 
+             <div th:if="${param.error}">
+            <p> Movie already exists !</p>
+            </div> 
+        </div>
+        
+		<!-- File uploading UI -->
+		<div class="form-container" id="add-poster" >
+		
+		<form th:action="@{/file/upload/}" method="Post" enctype="multipart/form-data" id="poster-form"> 
+				<input type="file" name="file" required>
+				<button type="submit"> Upload </button>
+		</form>
+		<div th:if="${param.filesuccess}">
+            <p> File Added Successfully !</p>
+            </div> 
+             <div th:if="${param.fileerror}">
+            <p> File already exists !</p>
+            </div> 
+		</div>
+        <!-- Add Poster Form (Initially hidden) -->
+        <div class="form-container" id="add-poster" style="display: none;">
+            <form id="poster-form">
+                <h3>Add Poster for Movie</h3>
+                <input type="file" name="movie-poster" id="movie-poster"  required>
+                <button type="submit">Upload Poster</button>
+            </form>
+        </div>
+
+        <!-- Add Theater Form -->
+        <div class="form-container" id="add-theater">
+            <form th:action="@{/theater/addNew}" method="post" th:object="${TheaterRequest}">
+                <h3>Add New Theater</h3>
+               
+                <input type="text" th:name="name" placeholder="Theater Name" required>
+               
+                <input type="text" th:name="address" placeholder="Location" required>
+               <!--  <input type="number" name="theater-capacity" placeholder="Seating Capacity" required> -->
+                <button type="submit"> Add Theater </button>
+            </form>
+            <div th:if="${param.theaterSuccess}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+             <div th:if="${param.theaterError}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+        </div>
+        
+        <!-- Add seats to theater -->
+        
+        <div class="form-container" id="add-theater-seats">
+        
+        <form th:action="@{/theater/addTheaterSeat}" method="post" th:object="${TheaterSeatRequest}">
+        
+        <select th:name="address"> <option th:each="theater : ${Theaters}" th:text="${theater.getAddress()}"></option> </select>
+        <label for="noOfSeatInRow">Enter number of Seat Row :</label> <input type="number" th:name="noOfSeatInRow">
+        <label for="noOfPremiumSeat">Enter Premium Seats </label> <input type="number" th:name="noOfPremiumSeat">
+        <label for="noOfClassicSeat">Enter Classic Seats</label> <input type="number" th:name="noOfClassicSeat">
+        <button type="submit"> Add Seats </button>
+        </form>
+        <div th:if="${param.theaterSeatSuccess}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+             <div th:if="${param.theaterSeatError}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+        </div>
+
+        <!-- Add Show Form -->
+        <div class="form-container" id="add-show">
+            <form th:action="@{/show/addNew}" method="post" th:object="${ShowRequest}">
+                <h3>Add Show</h3>
+               
+                <input type="text" name="showStartTime" placeholder="HH:MM:SS" required>
+                
+                <input type="date" name="showDate" required>
+               
+                <select th:name="theaterId" required>
+                 <option>Select Theater Id</option>
+				 <option th:each="theater :${Theaters}"th:text="${theater.getId()}">Theater 1</option>
+                </select>
+                
+                 <select th:name="movieId" required> 
+                 <option>Select Movie Id</option>
+                 <option th:each="movie :${Movies}" th:text="${movie.getId()}">Movie 1</option>
+                </select>
+                
+                <button type="submit">Add Show</button>
+            </form>
+             <div th:if="${param.showSuccess}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+             <div th:if="${param.showError}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+        </div>
+
+		<!-- Add Show Seats Price -->
+		<div class="form-container" id="add-show-seats">
+		
+		<form action="#" th:action="@{/show/associateSeats}" method="post" th:object="${ShowSeatRequest}">
+		<select th:name="showId" required>
+		<option th:each="show :${Shows}" th:text="${show.getShowId()}"></option>
+		</select>
+		
+		<input type="number" placeholder="Enter Price of Premium Seats" th:name="priceOfPremiumSeat">
+		<input type="number" placeholder="Enter Price of Classic Seats" th:name="priceOfClassicSeat">
+		
+		<button type="submit"> Add Show Seats </button>
+		</form>
+		 <div th:if="${param.showSeatSuccess}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+             <div th:if="${param.showSeatError}">
+            <p th:if="${message}" th:text="${message}"> </p>
+            </div> 
+		</div>
+		
+		
+        <!-- Ticket Bookings Table -->
+        <div id="ticket-bookings">
+            <h3>Ticket Bookings</h3>
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Show Name</th>
+                        <th>User Name</th>
+                        <th>Seats Booked</th>
+                        <th>Booking Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="ticket :${Tickets}">
+                        <td th:text="${ticket.getTicketId()}">1</td>
+                        <td > <span th:text="${ticket.getShow().getMovie().getMovieName()}"></span>/<span th:text="${ticket.getShow().getTheater().getName()}"></span></td>
+                        <td th:text="${ticket.getUser().getName()}">John Doe</td>
+                        <td th:text="${ticket.getBookedSeats()}">2</td>
+                        <td th:text="${ticket.getBookedAt()}">2025-01-20</td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--  <script>
+        // Form submission handlers (you can replace these with actual backend calls)
+        
+        // Handle Add Movie form submission
+        document.getElementById('movie-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Assuming movie is added successfully, show Add Poster form
+            document.getElementById('add-movie').style.display = 'none';
+            document.getElementById('add-poster').style.display = 'block';
+            alert('Movie added successfully! Now you can upload the movie poster.');
+        });
+
+        // Handle Add Poster form submission
+        document.getElementById('poster-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('movie-poster');
+            if (fileInput.files.length > 0) {
+                alert('Poster uploaded successfully!');
+            } else {
+                alert('Please select an image file to upload.');
+            }
+        });
+    </script>  -->
+
+</body>
+</html>

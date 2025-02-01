@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+        }
+
+        nav {
+            background-color: Red;
+            height : 40px;
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            flex-direction: row;
+            /* justify-content: center; */
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+            
+        }
+
+        .container {
+            display: flex;
+            flex-direction:row;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+           
+        }
+
+        .movie-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+           
+        }
+
+        .movie-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .movie-card h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .movie-card p {
+            color: gray;
+        }
+
+        .book-btn {
+            background-color: Red;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .book-btn:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            display : flex;
+            flex-direction:row;
+            align-items:center;
+            justify-content:center;
+            margin-top : 4rem;
+            padding: 20px;
+            background-color: Red;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height : 0.5rem;
+            bottom: 0;
+        }
+        .title {
+        color: black;
+        font-weight: 800;
+        font-size: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+    	<div class="title">BookYourShow</div>
+    	<div>
+        <a th:href="@{/}">Home</a>
+        <a href="#">Now Showing</a>
+        <a href="#">Coming Soon</a>
+        <a th:href="@{/contact}">Contact</a>
+        <a th:href="@{/signUp}">Sign Up</a>
+        <a th:href="@{/login}">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- Movie Booking Interface -->
+     <div class="container" >
+        <div class="movie-card" th:each="movie : ${movieList}">
+           <img  th:src="@{${'images/'+movie.getMoviePoster().getPosterName()}}" alt="Movie 1"> 
+            <h3 th:text="${movie.getMovieName()}"></h3>
+            <p>Genre: <span th:text="${movie.getGenre()}"></span> | Duration: <span th:text="${movie.getDuration()}"></span> min</p>
+            <form th:action="@{/login}"> <input type="submit" class="book-btn" value="Book" th:action="@{/login}" onclick="alert('Please LogIn to Procced')">
+       </form>
+        </div>
+    </div> 
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Movie Booking Inc. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

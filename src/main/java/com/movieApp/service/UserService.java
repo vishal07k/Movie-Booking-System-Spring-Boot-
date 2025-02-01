@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.movieApp.convertor.TicketConvertor;
@@ -27,7 +29,16 @@ public class UserService {
 	@Autowired
 	TicketRepository ticketRepository;
 	
+	/*
+	 * @Autowired PasswordEncoder passwordEncoder;
+	 */
+	
 	public String addUser(UserRequest userRequest) {
+		
+		/*
+		 * userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		 */
+		
 		Optional<User> users = userRepository.findByEmailId(userRequest.getEmailId());
 		
 		if (users.isPresent()) {
@@ -45,10 +56,30 @@ public class UserService {
 		{
 			throw new NotNullException();
 		}
-		
-		
+						
 		userRepository.save(user);
 		return "User Saved Successfully";
+	}
+	
+	public User getUserforLogin(UserRequest request) {
+		
+		Optional<User> users = userRepository.findByEmailId(request.getEmailId());
+		
+		if(users.isEmpty()) {
+			
+			throw new UserDoesNotExists();
+		}
+		
+		
+		User user = users.get();
+		
+		if(user.getPassword().equals(request.getPassword())) {
+		
+		return user;
+		
+		}
+		
+		return null;
 	}
 	
 	public List<HistoryResponse> showHistroy(int id){
@@ -68,5 +99,18 @@ public class UserService {
 		}
 		
 		return list;
+	}
+	
+	public User getUserByEmailId(String emailId) {
+		
+		User user = userRepository.findByEmailId(emailId).get();
+		
+		
+		return user;
+		
+	}
+	
+	public User getUserById(int id) {
+		return userRepository.findById(id).get();
 	}
 }

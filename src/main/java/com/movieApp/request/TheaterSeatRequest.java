@@ -4,11 +4,16 @@ import lombok.Data;
 
 @Data
 public class TheaterSeatRequest {
+	
     private String address;
+    
     private Integer noOfSeatInRow;
+    
     private Integer noOfPremiumSeat;
+    
     private Integer noOfClassicSeat;
-	public String getAddress() {
+	
+    public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
@@ -31,6 +36,11 @@ public class TheaterSeatRequest {
 	}
 	public void setNoOfClassicSeat(Integer noOfClassicSeat) {
 		this.noOfClassicSeat = noOfClassicSeat;
+	}
+	@Override
+	public String toString() {
+		return "TheaterSeatRequest [address=" + address + ", noOfSeatInRow=" + noOfSeatInRow + ", noOfPremiumSeat="
+				+ noOfPremiumSeat + ", noOfClassicSeat=" + noOfClassicSeat + "]";
 	}
     
     

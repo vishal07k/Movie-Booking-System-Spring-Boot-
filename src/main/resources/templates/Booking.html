@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Show</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: red;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Booking Page Styles */
+        .booking-page {
+            padding: 20px;
+        }
+
+        .select-movie {
+            margin-bottom: 20px;
+        }
+
+        .select-showtime {
+            margin-bottom: 20px;
+        }
+
+        .theater-list {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .theater-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+        }
+
+        .theater-card h4 {
+            margin-bottom: 10px;
+        }
+
+        .book-btn {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .book-btn:hover {
+            background-color: green;
+        }
+
+        /* Form for show selection */
+        .show-selection-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .show-selection-form select {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
+        .show-selection-form button {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .show-selection-form button:hover {
+            background-color: green;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="user-info">
+            <span>Welcome, <span th:text="${Ticket.getUserId()}"></span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#booking">Book Show</a>
+            <a href="#">Booking History</a>
+        </div>
+    </div>
+
+    <!-- Booking Page -->
+    <div class="booking-page" id="booking">
+        <h2>Select a Show for Movie <span th:text="${Movie.getMovieName()}"></span></h2>
+
+        <!-- Select Movie -->
+     <!--    <div class="select-movie">
+            <h3>Choose a Movie</h3>
+            <select id="movie-select" onchange="fetchShowtimes()">
+                <option value="">Select Movie</option>
+                <option th:value="${Ticket.getMovieId()}" th:text="${Ticket.getMovieId()}">Movie Name</option>
+                Dynamically populated movie options
+            </select>
+        </div> -->
+
+         <!-- Select Showtime -->
+         <!--
+        <div class="select-showtime" id="showtime-container" >
+            <h3>Select Show</h3>
+            <select id="showtime-select">
+                <option value="">Select Show Time</option>
+                Dynamically populated showtimes
+            </select>
+        </div> -->
+
+        <!-- Theater List for Showtimes -->
+        <div class="theater-list" id="theater-list" >
+        <div class="theater-card" th:each="show : ${Shows}">
+            <h2 th:text="${show.getTheater().getName()}"></h2>
+            <p>Address : <span th:text="${show.getTheater().getAddress()}"></span></p>
+            <p>Show time : <span th:text="${show.getTime()}"></span> </p>
+            <p>Show Date : <span th:text="${show.getDate()}"></span> </p>
+            
+            <form th:action="@{/selectSeat}" th:object="${TicketRequest}" method="post">
+            <input type="hidden" name="movieId" th:value="${show.getMovie().getId()}">
+            <input type="hidden" name="showId" th:value="${show.getShowId()}">
+            <input type="hidden" name="userId" th:value="${Ticket.getUserId()}">
+            <button class="book-btn" type="submit"> Book </button>
+            
+            </form>
+        </div>
+        </div>
+    </div>
+
+   <!-- <script>
+        // Function to fetch the showtimes for the selected movie
+        function fetchShowtimes() {
+            const movieId = document.getElementById('movie-select').value;
+
+            if (movieId) {
+                // Make an AJAX request to the backend to fetch showtimes for the selected movie
+                // For now, just simulate this with a console log
+                console.log(`Fetching showtimes for movie ID: ${movieId}`);
+
+                // Example of what you might do after receiving data:
+                // - Show the "Showtime" selection dropdown
+                // - Populate the showtimes and theater list
+                document.getElementById('showtime-container').style.display = 'block';
+
+                // For simulation, create mock data:
+                const showtimes = [
+                    { id: 1, time: "10:00 AM", theater: "Theater A" },
+                    { id: 2, time: "2:00 PM", theater: "Theater B" },
+                    { id: 3, time: "5:00 PM", theater: "Theater C" },
+                ];
+
+                // Populate the showtime select
+                const showtimeSelect = document.getElementById('showtime-select');
+                showtimeSelect.innerHTML = '<option value="">Select Show Time</option>';
+                showtimes.forEach(show => {
+                    showtimeSelect.innerHTML += `<option value="${show.id}">${show.time}</option>`;
+                });
+
+                // Populate theater list
+                const theaterList = document.getElementById('theater-list');
+                theaterList.innerHTML = '';
+                showtimes.forEach(show => {
+                    theaterList.innerHTML += `
+                        <div class="theater-card">
+                            <h4>${show.theater}</h4>
+                            <p>Show Time: ${show.time}</p>
+                            <button class="book-btn" onclick="bookShow(${show.id})">Book Now</button>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // Simulated function to handle booking
+        function bookShow(showId) {
+            alert(`Booking for show ID: ${showId}`);
+            // Here, you would make an API request to book the show
+        }
+    </script>  -->
+</body>
+</html>

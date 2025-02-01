@@ -16,8 +16,25 @@ public class UserConvertor {
 		 user.setEmailId(userRequest.getEmailId());
 		 user.setRoles(userRequest.getRoles());
 		 user.setPassword(userRequest.getPassword());
+		 user.setRoles("USER");
 		 
 		 return user;
+	 }
+	 
+	 public static UserRequest userToUserRequest(User user1) {
+		 
+		 UserRequest user = new UserRequest();
+		 user.setName(user1.getName());
+		 user.setAddress(user1.getAddress());
+		 user.setAge(user1.getAge());
+		 user.setEmailId(user1.getEmailId());
+		 user.setGender(user1.getGender());
+		 user.setMobileNo(user1.getMobileNo());
+		 user.setPassword(user1.getPassword());
+		 user.setRoles(user1.getRoles());
+		 
+		 return user;
+		 
 	 }
 	 
 	 public static UserResponse userToUserDto(User user) {

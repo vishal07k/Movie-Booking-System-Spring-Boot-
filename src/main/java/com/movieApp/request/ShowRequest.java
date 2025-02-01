@@ -12,6 +12,7 @@ public class ShowRequest {
     private Date showDate;
     private Integer theaterId;
     private Integer movieId;
+    
 	public Time getShowStartTime() {
 		return showStartTime;
 	}
@@ -35,6 +36,11 @@ public class ShowRequest {
 	}
 	public void setMovieId(Integer movieId) {
 		this.movieId = movieId;
+	}
+	@Override
+	public String toString() {
+		return "ShowRequest [showStartTime=" + showStartTime + ", showDate=" + showDate + ", theaterId=" + theaterId
+				+ ", movieId=" + movieId + "]";
 	}
     
 }

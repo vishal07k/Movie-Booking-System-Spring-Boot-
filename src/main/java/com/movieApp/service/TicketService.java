@@ -1,5 +1,6 @@
 package com.movieApp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,7 @@ public class TicketService {
 	private UserRepository userRepository;
 
 	public TicketResponse ticketBooking(TicketRequest ticketRequest) {
+		
 		Optional<Show> showOpt = showRepository.findById(ticketRequest.getShowId());
 
 		if (showOpt.isEmpty()) {
@@ -106,9 +108,12 @@ public class TicketService {
 		Integer totalAmount = 0;
 
 		for (ShowSeat showSeat : showSeatList) {
-			if (requestSeats.contains(showSeat.getSeatNo())) {
+			for(String seat : requestSeats) {
+			if (seat.contains(showSeat.getSeatNo())) {
+				System.out.println("Running.................................................................");
 				totalAmount += showSeat.getPrice();
 				showSeat.setIsAvailable(Boolean.FALSE);
+			}
 			}
 		}
 
@@ -160,6 +165,13 @@ public class TicketService {
 		
 		return 1;
 		
+	}
+	
+	public List<Ticket> getAllTickets() {
+		
+		List<Ticket>  tickets = ticketRepository.findAll();
+ 		
+		return tickets;
 	}
 
 }

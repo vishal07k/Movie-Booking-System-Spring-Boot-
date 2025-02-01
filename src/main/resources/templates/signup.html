@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Home</title>
+<link rel="stylesheet" href="#" th:href="@{/css/bootstrap.css}" />
+<link rel="stylesheet" href="#" th:href="@{/css/all.css}" />
+<link rel="stylesheet" href="#" th:href="@{/css/index.css}" />
+</head>
+<body>
+
+	<div class="container base">
+		<div class="row base-row">
+			<div class="col-3 menu">
+				<div class="logo mb-5 text-center text-dark  pt-1 pb-1">
+					<h4>BookYourShow</h4>
+				</div>
+				<ul class="list">
+					<li><a th:href="@{/}"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</a></li>
+					<li><a th:href="@{/signUp}"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register</a></li>
+					<li><a th:href="@{/login}"><i class="fas fa-users"></i>&nbsp;&nbsp;Login</a></li>
+					<li><a href=""><i class="fas fa-address-card"></i>&nbsp;&nbsp;About
+							us</a></li>
+					<li><a href=""><i class="fas fa-phone-square-alt"></i>&nbsp;&nbsp;Contact
+							us</a></li>
+				</ul>
+			</div>
+
+			<div class="col-9 register-form">
+				<div class="login">
+					<form th:action="@{/user/addNew}" th:object="${UserRequest}"
+						method="POST">
+						<div class="login-head">
+							<h3>Register</h3>
+						</div>
+						<div th:if="${message}" class="alert alert-success">
+						<p th:text="${message}"></p>
+						<!-- <th:block th:text="${#session.removeAttribute('message')}"></th:block> -->
+						</div>
+						<div class="form-group">
+							<label for="exampleInputName">Name</label> <input type="text"
+								class="form-control" id="exampleInputName"
+								placeholder="Enter name" name="name" required="required">
+
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputAge">Age</label> <input type="Number"
+								class="form-control" id="exampleInputAge" name="age"
+								placeholder="Enter Age" required="required">
+
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputAddress">Address</label> <input
+								type="Text" class="form-control" id="exampleInputAddress"
+								name="address" placeholder="Enter City" required="required">
+
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputMobile">Mobile No</label> <input
+								type="Number" class="form-control" id="exampleInputMobile"
+								name="mobileNo" placeholder="Enter Mobile Number"
+								required="required">
+
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputEmail1">Email address</label> <input
+								type="email" class="form-control" id="exampleInputEmail1"
+								name="emailId" placeholder="Enter email" required="required">
+
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputPassword1">Password</label> <input
+								type="password" class="form-control" id="exampleInputPassword1"
+								placeholder="Password" name="password" required="required">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputGender">Gender</label> <select
+								name="gender">
+								<option value="MALE">MALE</option>
+								<option value="FEMALE">FEMALE</option>
+							</select>
+
+						</div>
+
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+					<div class="login-register">
+						<p>
+							Already register <span><a th:href="@{/signIn}">click
+									here</a></span>
+						</p>
+					</div>
+					
+				</div>
+
+
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

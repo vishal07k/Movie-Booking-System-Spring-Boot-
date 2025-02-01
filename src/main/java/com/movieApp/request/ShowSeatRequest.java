@@ -25,6 +25,11 @@ public class ShowSeatRequest {
 	public void setPriceOfClassicSeat(Integer priceOfClassicSeat) {
 		this.priceOfClassicSeat = priceOfClassicSeat;
 	}
+	@Override
+	public String toString() {
+		return "ShowSeatRequest [showId=" + showId + ", priceOfPremiumSeat=" + priceOfPremiumSeat
+				+ ", priceOfClassicSeat=" + priceOfClassicSeat + "]";
+	}
     
     
 }

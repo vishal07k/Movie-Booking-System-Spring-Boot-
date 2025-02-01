@@ -19,6 +19,10 @@ public class TheaterRequest {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	@Override
+	public String toString() {
+		return "TheaterRequest [name=" + name + ", address=" + address + "]";
+	}
     
     
 }
