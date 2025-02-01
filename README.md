@@ -42,7 +42,7 @@ The **Movie Booking Application** allows users to browse and book movie tickets,
 
 1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/your-username/movie-booking-app.git
+    git clone https://github.com/vishal07k/Movie-Booking-System-Spring-Boot-.git
     cd movie-booking-app
     ```
 
