@@ -21,6 +21,7 @@ import com.movieApp.entities.ShowSeat;
 import com.movieApp.entities.Theater;
 import com.movieApp.entities.Ticket;
 import com.movieApp.entities.User;
+import com.movieApp.exceptions.MovieDoesNotExists;
 import com.movieApp.exceptions.UserDoesNotExists;
 import com.movieApp.repository.UserRepository;
 import com.movieApp.request.TicketRequest;
@@ -33,6 +34,7 @@ import com.movieApp.service.TicketService;
 import com.movieApp.service.UserService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -77,7 +79,7 @@ public class MainController {
 	}
 	
 	@PostMapping("/loginCheck")
-	public String loginCheck(@ModelAttribute UserRequest request, Model model,RedirectAttributes redirectAttributes)
+	public String loginCheck(@ModelAttribute UserRequest request, Model model,RedirectAttributes redirectAttributes, HttpSession httpSession)
 	{
 		System.out.println(request);
 		try {
@@ -90,40 +92,13 @@ public class MainController {
 		if(user != null) {
 			
 		if(user.getRoles().equals("ADMIN")) {
-			
-			List<Movie> movies = movieService.getAllMovies();
-			
-			List<Theater> theaters = theaterService.getAllTheaters();
-			
-			List<Show> shows = showService.getShowsByDate();
-			
-			List<Ticket> tickets = ticketService.getAllTickets();
-			
-			model.addAttribute("Movies", movies);
-			
-			model.addAttribute("USER", user);
-			
-			model.addAttribute("Theaters", theaters);
-			
-			model.addAttribute("Shows", shows);
-			
-			model.addAttribute("Tickets", tickets);
-			
-			return "adminDashbord";
+			httpSession.setAttribute("Admin", user);
+			return "redirect:/admin/"+ user.getEmailId();
 		}
 		
 		if(user.getRoles().equals("USER")) {
-			
-		model.addAttribute("USER", user);
-		
-		List<Movie> movies = movieService.getAllMovies();
-		
-		List<Movie> popularMovies = movieService.getPopularMovies();
-		
-		model.addAttribute("movieList",movies);
-		model.addAttribute("popularMovies", popularMovies);
-		
-		return "userdashbord";
+		httpSession.setAttribute("User", user);
+		return "redirect:/userDashbord/" + user.getEmailId();
 		
 		}
 		
@@ -146,18 +121,36 @@ public class MainController {
 		User user = userService.getUserByEmailId(emailId);
 		
 		List<Movie> movies = movieService.getAllMovies();
-		 int size = movies.size();
-		 
-//		 Movie movie = movies.get(size-1);
- 		
-		model.addAttribute("USER", user);
+		
+		List<Movie> popularMovies = movieService.getPopularMovies();
+		System.out.println(popularMovies);
+		
+		List<Theater> theaters = theaterService.getAllTheaters();
+		
+		List<Show> shows = showService.getShowsByDate();
+		
+		List<Ticket> tickets = ticketService.getAllTickets();
 		
 		model.addAttribute("Movies", movies);
+		
+		model.addAttribute("popularMovies", popularMovies);
+		
+		model.addAttribute("USER", user);
+		
+		model.addAttribute("Theaters", theaters);
+		
+		model.addAttribute("Shows", shows);
+		
+		model.addAttribute("Tickets", tickets);
 		
 		return "adminDashbord";
 	}
 	
-	
+	@GetMapping("/logOut")
+	public String logOut(HttpSession httpSession) {
+		httpSession.invalidate();
+		return "redirect:/login";
+	}
 	
 	
 	@PostMapping("/booking")
@@ -169,6 +162,10 @@ public class MainController {
 		List<Show> shows = showService.getShowsByMovieId(ticketRequest.getMovieId());
 		
 		Optional<Movie> movieOpt = movieService.getMoviesById(ticketRequest.getMovieId());
+		
+		if(movieOpt.isEmpty()) {
+			throw new MovieDoesNotExists();
+		}
 		
 		model.addAttribute("Movie", movieOpt.get());
 		
@@ -209,18 +206,26 @@ public class MainController {
 		ticketRequest.setRequestSeats(originalSeats);
 		System.out.println(ticketRequest);
 		
-		int totalPrice = showService.totalPrice;
+		int totalPrice = showService.getTotalPrice();
 		//System.out.println(totalPrice);
 		
 		User user = userService.getUserById(ticketRequest.getUserId());
 		
-		Movie movie = movieService.getMoviesById(ticketRequest.getMovieId()).get();
+		System.out.println(ticketRequest.getMovieId());
+		
+		Optional<Movie> movie = movieService.getMoviesById(ticketRequest.getMovieId());
+		
+		if(movie.isEmpty()) {
+			throw new MovieDoesNotExists();
+		}
+		
+		//System.out.println(movie.get());
 		
 		Show show = showService.getShowById(ticketRequest.getShowId());
 		
 		model.addAttribute("Show", show);
 		
-		model.addAttribute("Movie", movie);
+		model.addAttribute("Movie", movie.get());
 		
 		model.addAttribute("USER", user);
 		model.addAttribute("USER", user);
@@ -236,11 +241,13 @@ public class MainController {
 		
 		User user = userService.getUserByEmailId(emailId);
 		model.addAttribute("USER", user);
-		List<Movie> movies = movieService.getAllMovies();
+		
+		List<Movie> movies = movieService.getLatestMovies();
 		
 		List<Movie> popularMovies = movieService.getPopularMovies();
 		
 		model.addAttribute("movieList",movies);
+		
 		model.addAttribute("popularMovies", popularMovies);
 		
 		return "userdashbord";

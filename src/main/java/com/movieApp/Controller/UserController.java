@@ -69,10 +69,6 @@ public class UserController {
 	@GetMapping("/dashbord")
 	public String userdashbord(Model model/* @AuthenticationPrincipal UserDetails details*/) {
 		
-//		String username = details.getUsername();
-		
-//		model.addAttribute(USER_LOGIN, username);
-		
 		return "userdashbord";
 		
 	}

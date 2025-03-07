@@ -1,6 +1,7 @@
 package com.movieApp.FileUploaderHelper;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,13 @@ public class FileUploadHelper {
 	MovieService movieService;
 
 	public final String UPLOAD_DIR = "/home/mima26/Desktop/SpringDemo1//MovieBookingSystem/src/main/resources/static/images";
+	
+	//public final String UPLOAD_DIR = new ClassPathResource("static/images/").getFile().getAbsolutePath();
 
+	public FileUploadHelper() throws IOException{
+		
+	}
+	
 	public int uploadFile(MultipartFile f, int movieId) {
 		
 		int result = 0;

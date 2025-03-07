@@ -3,241 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <title>User Dashboard</title>
-<style>
+<style type="text/css">
+/* Global Styles */
 body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: gray;
+    font-family: 'Poppins', sans-serif;
+    background-color: #1c1c1c;
+    color: white;
+    margin: 0;
+    padding: 0;
 }
 
-/* Navbar Styles */
+/* Navbar */
 .navbar {
-	background-color: red; /* Set navbar background to red */
-	color: white;
-	padding: 15px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-weight: 600; /* Increase font weight to 600 */
+    background-color: #2d2d2d;
+    padding: 12px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.navbar .user-info {
-	display: flex;
-	align-items: center;
-}
-
+/* User Image (Reduced Size) */
 .navbar .user-info img {
-	border-radius: 50%;
-	width: 30px;
-	height: 30px;
-	margin-right: 10px;
-}
-
-.navbar .user-info span {
-	margin-right: 20px;
-}
-
-.navbar .logout-btn {
-	background-color: red; /* Set button background to red */
-	border: none;
-	padding: 8px 16px;
-	color: white;
-	cursor: pointer;
-	border-radius: 5px;
-	font-weight: 600;
-}
-
-/* Hover effect for logout button */
-.navbar .logout-btn:hover {
-	background-color: green; /* Change background to green on hover */
-}
-
-.navbar .nav-links {
-	display: flex;
-	gap: 20px;
+    width: 32px; 
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
 }
 
 .navbar .nav-links a {
-	color: white;
-	text-decoration: none;
-	font-size: 16px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 12px;
+    transition: color 0.3s;
 }
 
 .navbar .nav-links a:hover {
-	text-decoration: underline;
-}
-
-/* Dashboard Styles */
-.dashboard {
-	padding: 20px;
-}
-
-.dashboard h2 {
-	color: #333;
+    color: #ff5757;
 }
 
 /* Search Bar */
 .search-bar {
-	margin: 20px 0;
-	display: flex;
-	gap: 10px;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
 }
 
 .search-bar input, .search-bar select {
-	padding: 10px;
-	font-size: 16px;
-	border-radius: 5px;
-	border: 1px solid #ccc;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    width: 220px;
+    background: #2d2d2d;
+    color: white;
+    transition: 0.3s;
+}
+
+.search-bar input:focus, .search-bar select:focus {
+    outline: none;
+    border-color: #ff5757;
+    box-shadow: 0 0 6px rgba(255, 87, 87, 0.5);
 }
 
 .search-bar button {
-	background-color: red; /* Set button background to red */
-	color: white;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
+    background-color: #ff5757;
+    padding: 12px;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Hover effect for search button */
 .search-bar button:hover {
-	background-color: green; /* Change background to green on hover */
+    background-color: #ff1e1e;
+    transform: scale(1.05);
 }
 
-/* Movie Categories */
+/* Movie Section */
 .movie-category {
-	margin-top: 40px;
-	text-align: center;
-	color: white;
-	font-weight: 600;
-	padding: 10px;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(145deg, #222, #1a1a1a);
+    border-radius: 10px;
+    margin: 30px auto;
+    width: 90%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.movie-category h3 {
-	color: #333;
-	margin-bottom: 15px;
+.movie-category h2 {
+    color: #ff5757;
 }
 
-.movie-list {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 20px;
-}
-
-.movie-card {
-	background-color: white;
-	padding: 15px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	text-align: center;
-}
-
-.movie-card img {
-	max-width: 100%;
-	height: 60%;
-	border-radius: 8px;
-}
-
-.movie-card button {
-	background-color: red; /* Set button background to red */
-	color: white;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-/* Hover effect for movie buttons */
-.movie-card button:hover {
-	background-color: green; /* Change background to green on hover */
-}
-
-.movie-card .movie-details {
-	margin-top: 10px;
-	text-align: left;
-}
-
-.movie-card .movie-details p {
-	margin: 5px 0;
-	font-size: 14px;
-	color: #555;
-}
-
-/* Booking History Section */
-.booking-history {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 20px;
-	margin-top: 20px;
-}
-
-.history-card {
-	background-color: #f9f9f9;
-	padding: 15px;
-	border-radius: 8px;
-	text-align: center;
-}
-
-.history-card span {
-	font-weight: bold;
-}
-
+/* Movie Cards Container - Vertical Scroll with Row Layout */
 .container {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	margin: 20px;
+    display: flex;
+    flex-wrap: wrap;  /* Allow cards to wrap into multiple rows */
+    gap: 20px;  /* Space between cards */
+    padding: 15px;
+    max-height: 500px;  /* Set max height */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+    border-radius: 12px;
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.3);
+    scroll-behavior: smooth;
 }
 
+/* Custom Scrollbar */
+.container::-webkit-scrollbar {
+    width: 8px;  /* Width for vertical scrollbar */
+}
+
+.container::-webkit-scrollbar-track {
+    background: #2d2d2d;
+    border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background: #ff5757;
+    border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+    background: #ff1e1e;
+}
+
+/* Movie Cards */
 .movie-card {
-	background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	margin: 15px;
-	padding: 20px;
-	width: 250px;
-	text-align: center;
+    background: #2d2d2d;
+    border-radius: 10px;
+    padding: 15px;
+    width: 280px;  /* Fixed width for better alignment */
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    flex: 1 1 calc(33.33% - 20px); /* Makes cards fit evenly in rows */
+    min-width: 250px; /* Ensures cards don't get too small */
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 15px rgba(255, 87, 87, 0.3);
 }
 
 .movie-card img {
-	width: 100%;
-	border-radius: 8px;
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
 }
 
 .movie-card h3 {
-	font-size: 1.2em;
-	margin: 10px 0;
+    margin-top: 10px;
+    font-size: 18px;
+    color: white;
 }
 
 .movie-card p {
-	color: gray;
+    font-size: 14px;
+    color: #bbb;
 }
 
 .book-btn {
-	background-color: Red;
-	color: white;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	margin-top: 10px;
-	width: 100%;
+    background-color: #ff5757;
+    padding: 12px;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .book-btn:hover {
-	background-color: #45a049;
+    background-color: #ff1e1e;
+    transform: scale(1.05);
 }
 
-.success {
-	background-color: gray;
-	height: 20px;
-	width: 100px;
+/* Booking History */
+.booking-history {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    padding: 20px;
+    background: #222;
+    border-radius: 10px;
+}
+
+.history-card {
+    background: #2d2d2d;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    width: 250px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.history-card span {
+    font-weight: bold;
+    color: #ff5757;
+}
+  .successMessage {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.errorMessage {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 </style>
+
 </head>
 <body>
 
@@ -253,7 +253,7 @@ body {
 				History</a>
 		</div>
 		<button class="logout-btn logout" style="background-color: white;">
-			<a th:href="@{/}" style="text-decoration: none; color: red;">
+			<a th:href="@{/logOut}" style="text-decoration: none; color: red;">
 				Logout </a>
 		</button>
 	</div>
@@ -264,11 +264,11 @@ body {
 			Welcome, <span th:text="${USER.getName()}"></span>
 		</h2>
 
-		<div class="success">
-			<div th:if="${param.ticketBooked}">
+		<div  class="success">
+			<div class="successMessage" th:if="${param.ticketBooked}">
 				<p>Movie Ticket Booked Successfully !</p>
 			</div>
-			<div th:if="${param.ticketBookedError}">
+			<div class="errorMessage" th:if="${param.ticketBookedError}">
 				<p>Something went wrong ! Please try again some time</p>
 			</div>
 		</div>
@@ -291,10 +291,10 @@ body {
 			<h2 style="color: white;">Latest Movies</h2>
 
 			 <div class="container">
-        <div class="movie-card" th:each="movie : ${movieList}"
+       		 <div class="movie-card" th:each="movie : ${movieList}"
              data-title="${movie.getMovieName().toLowerCase()}"
              data-genre="${movie.getGenre().toLowerCase()}">
-            <img th:src="@{${'images/' + movie.getMoviePoster().getPosterName()}}"
+            <img th:src="@{${'/images/' + movie.getMoviePoster().getPosterName()}}"
                  alt="Movie 1">
             <h3 id="movieName" th:text="${movie.getMovieName()}"></h3>
             <p>
@@ -322,7 +322,7 @@ body {
 			<div class="movie-card" th:each="movie : ${popularMovies}"
 			 data-title="${movie.getMovieName().toLowerCase()}"
              data-genre="${movie.getGenre().toLowerCase()}">
-				<img th:src="@{${'images/'+movie.getMoviePoster().getPosterName()}}"
+				<img th:src="@{${'/images/'+movie.getMoviePoster().getPosterName()}}"
 					alt="Movie 1">
 				<h3 id="movieName" th:text="${movie.getMovieName()}"></h3>
 				<p>
@@ -401,5 +401,8 @@ body {
 
 
     </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

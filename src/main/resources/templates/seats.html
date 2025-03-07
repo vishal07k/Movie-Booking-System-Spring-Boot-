@@ -140,7 +140,7 @@
         <!-- Booking Button -->
         <form method="POST" th:action="@{/bookseats}" th:object="${TicketRequest}">
             <input type="hidden" name="showId" th:value="${Ticket.getShowId()}">
-            <input type="hidden" name="movieId" th:value="${Ticket.getShowId()}">
+            <input type="hidden" name="movieId" th:value="${Ticket.getMovieId()}">
             <input type="hidden" name="userId" th:value="${Ticket.getUserId()}">
             <input type="hidden" name="requestSeats" id="selectedSeatsInput">
             <button class="book-btn" id="book-btn" type="submit" disabled>Book Now</button>

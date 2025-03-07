@@ -17,13 +17,16 @@ public class MovieRequest {
 	private Genre genre;
 	private Language language;
 	private String adminEmail;
+	private String posterUrl;
 	
+	public String getPosterUrl() {
+		return posterUrl;
+	}
+	public void setPosterUrl(String posterUrl) {
+		this.posterUrl = posterUrl;
+	}
 	private int id;
-	
-	
-	
-	
-	
+		
 	public int getId() {
 		return id;
 	}

@@ -43,7 +43,7 @@ public class MoviePoster {
 
 	@Override
 	public String toString() {
-		return "MoviePoster [posterName=" + posterName + ", movieId=" + movieId + "]";
+		return "MoviePoster [posterName=" + posterName + "]";
 	}
 	
 }

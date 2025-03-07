@@ -16,6 +16,7 @@ public class MovieConvertor {
 		movie.setLanguage(movieRequest.getLanguage());
 		movie.setReleaseDate(movieRequest.getReleaseDate());
 		movie.setRating(movieRequest.getRating());
+		movie.setActive(true);
 		
 		return movie;
 	}

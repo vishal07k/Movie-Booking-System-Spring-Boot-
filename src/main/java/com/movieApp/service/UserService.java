@@ -13,6 +13,7 @@ import com.movieApp.convertor.TicketConvertor;
 import com.movieApp.convertor.UserConvertor;
 import com.movieApp.entities.Ticket;
 import com.movieApp.entities.User;
+import com.movieApp.exceptions.MobileInvalidException;
 import com.movieApp.exceptions.NotNullException;
 import com.movieApp.exceptions.UserDoesNotExists;
 import com.movieApp.exceptions.UserExist;
@@ -29,15 +30,9 @@ public class UserService {
 	@Autowired
 	TicketRepository ticketRepository;
 	
-	/*
-	 * @Autowired PasswordEncoder passwordEncoder;
-	 */
 	
 	public String addUser(UserRequest userRequest) {
 		
-		/*
-		 * userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-		 */
 		
 		Optional<User> users = userRepository.findByEmailId(userRequest.getEmailId());
 		
@@ -50,6 +45,10 @@ public class UserService {
 		
 		if(user.getName().equals(null) || user.getName().isEmpty()) {
 			throw new NotNullException();
+		}
+		
+		if(user.getMobileNo().length() != 10) {
+			throw new MobileInvalidException();
 		}
 		
 		if(user.getMobileNo().isEmpty() || user.getMobileNo().equals(null))

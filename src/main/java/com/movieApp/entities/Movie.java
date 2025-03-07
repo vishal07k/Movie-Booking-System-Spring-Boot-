@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.movieApp.enums.Genre;
 import com.movieApp.enums.Language;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,13 +53,24 @@ public class Movie {
     @Enumerated(value = EnumType.STRING)
     private Language language;
 
-    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Show> shows = new ArrayList<>();
     
     @OneToOne(mappedBy = "movieId",cascade = CascadeType.ALL)
     private MoviePoster moviePoster;
     
-    
+    @Column(scale = 1)
+    private boolean isActive;
+
+        
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 
 	public MoviePoster getMoviePoster() {
 		return moviePoster;
@@ -134,8 +147,7 @@ public class Movie {
 	@Override
 	public String toString() {
 		return "Movie [id=" + id + ", movieName=" + movieName + ", duration=" + duration + ", rating=" + rating
-				+ ", releaseDate=" + releaseDate + ", genre=" + genre + ", language=" + language + ", shows=" + shows
-				+ ", moviePoster=" + moviePoster + "]";
+				+ ", releaseDate=" + releaseDate + ", genre=" + genre + ", language=" + language + ", moviePoster=" + moviePoster + "]";
 	}
     
 	

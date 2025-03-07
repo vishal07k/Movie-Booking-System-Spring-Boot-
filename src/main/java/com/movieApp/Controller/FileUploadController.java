@@ -35,11 +35,6 @@ public class FileUploadController {
 	@PostMapping("/file/upload/")
 	public String uploadFile(@RequestParam("file") MultipartFile file) {
 		try {
-			// validation
-
-			// System.out.println(movieId);
-			//System.out.println(file.getOriginalFilename());
-
 			
 			  if(file.isEmpty()) { //return
 				  

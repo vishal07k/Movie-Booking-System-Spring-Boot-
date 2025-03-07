@@ -33,6 +33,16 @@
             text-decoration: underline;
         }
 
+        /* Search bar styles */
+        .search-bar {
+            padding: 10px;
+            width: 250px;
+            margin-right: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
         /* Booking Page Styles */
         .booking-page {
             padding: 20px;
@@ -107,6 +117,24 @@
             background-color: green;
         }
 
+        /* Date picker container */
+        .date-filter-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .date-filter-container label {
+            font-weight: bold;
+        }
+
+        .date-filter-container input {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
     </style>
 </head>
 <body>
@@ -123,98 +151,56 @@
         </div>
     </div>
 
+    <!-- Search Bar & Filters -->
+    <div class="search-filters">
+        <!-- Date Filter -->
+        <div class="date-filter-container">
+            <label for="filter-date">Select Date:</label>
+            <input type="date" id="filter-date" name="filter-date">
+        </div>
+    </div>
+
     <!-- Booking Page -->
     <div class="booking-page" id="booking">
         <h2>Select a Show for Movie <span th:text="${Movie.getMovieName()}"></span></h2>
 
-        <!-- Select Movie -->
-     <!--    <div class="select-movie">
-            <h3>Choose a Movie</h3>
-            <select id="movie-select" onchange="fetchShowtimes()">
-                <option value="">Select Movie</option>
-                <option th:value="${Ticket.getMovieId()}" th:text="${Ticket.getMovieId()}">Movie Name</option>
-                Dynamically populated movie options
-            </select>
-        </div> -->
-
-         <!-- Select Showtime -->
-         <!--
-        <div class="select-showtime" id="showtime-container" >
-            <h3>Select Show</h3>
-            <select id="showtime-select">
-                <option value="">Select Show Time</option>
-                Dynamically populated showtimes
-            </select>
-        </div> -->
-
         <!-- Theater List for Showtimes -->
-        <div class="theater-list" id="theater-list" >
-        <div class="theater-card" th:each="show : ${Shows}">
-            <h2 th:text="${show.getTheater().getName()}"></h2>
-            <p>Address : <span th:text="${show.getTheater().getAddress()}"></span></p>
-            <p>Show time : <span th:text="${show.getTime()}"></span> </p>
-            <p>Show Date : <span th:text="${show.getDate()}"></span> </p>
-            
-            <form th:action="@{/selectSeat}" th:object="${TicketRequest}" method="post">
-            <input type="hidden" name="movieId" th:value="${show.getMovie().getId()}">
-            <input type="hidden" name="showId" th:value="${show.getShowId()}">
-            <input type="hidden" name="userId" th:value="${Ticket.getUserId()}">
-            <button class="book-btn" type="submit"> Book </button>
-            
-            </form>
-        </div>
+        <div class="theater-list" id="theater-list">
+            <div class="theater-card" th:each="show : ${Shows}">
+                <h2 th:text="${show.getTheater().getName()}"></h2>
+                <p>Address : <span th:text="${show.getTheater().getAddress()}"></span></p>
+                <p>Show time : <span th:text="${show.getTime()}"></span></p>
+                <p>Show Date : <span th:text="${show.getDate()}"></span></p>
+                <form th:action="@{/selectSeat}" th:object="${TicketRequest}" method="post">
+                    <input type="hidden" name="movieId" th:value="${show.getMovie().getId()}">
+                    <input type="hidden" name="showId" th:value="${show.getShowId()}">
+                    <input type="hidden" name="userId" th:value="${Ticket.getUserId()}">
+                    <button class="book-btn" type="submit"> Book </button>
+                </form>
+            </div>
         </div>
     </div>
 
-   <!-- <script>
-        // Function to fetch the showtimes for the selected movie
-        function fetchShowtimes() {
-            const movieId = document.getElementById('movie-select').value;
+    <script>
+        // Filtering by Date
+        document.getElementById('filter-date').addEventListener('change', filterShowsByDate);
 
-            if (movieId) {
-                // Make an AJAX request to the backend to fetch showtimes for the selected movie
-                // For now, just simulate this with a console log
-                console.log(`Fetching showtimes for movie ID: ${movieId}`);
+        function filterShowsByDate() {
+            const selectedDate = document.getElementById('filter-date').value;
+            const theaterCards = document.querySelectorAll('.theater-card');
 
-                // Example of what you might do after receiving data:
-                // - Show the "Showtime" selection dropdown
-                // - Populate the showtimes and theater list
-                document.getElementById('showtime-container').style.display = 'block';
+            theaterCards.forEach(card => {
+                const showDateText = card.querySelector('p:nth-child(4)').textContent; // Show Date text
+                const showDate = showDateText.split(": ")[1]; // Get the date from text (assuming format is 'Show Date: YYYY-MM-DD')
 
-                // For simulation, create mock data:
-                const showtimes = [
-                    { id: 1, time: "10:00 AM", theater: "Theater A" },
-                    { id: 2, time: "2:00 PM", theater: "Theater B" },
-                    { id: 3, time: "5:00 PM", theater: "Theater C" },
-                ];
-
-                // Populate the showtime select
-                const showtimeSelect = document.getElementById('showtime-select');
-                showtimeSelect.innerHTML = '<option value="">Select Show Time</option>';
-                showtimes.forEach(show => {
-                    showtimeSelect.innerHTML += `<option value="${show.id}">${show.time}</option>`;
-                });
-
-                // Populate theater list
-                const theaterList = document.getElementById('theater-list');
-                theaterList.innerHTML = '';
-                showtimes.forEach(show => {
-                    theaterList.innerHTML += `
-                        <div class="theater-card">
-                            <h4>${show.theater}</h4>
-                            <p>Show Time: ${show.time}</p>
-                            <button class="book-btn" onclick="bookShow(${show.id})">Book Now</button>
-                        </div>
-                    `;
-                });
-            }
+                // Compare the selected date with the show date
+                if (selectedDate && showDate !== selectedDate) {
+                    card.style.display = 'none';  // Hide shows that do not match the selected date
+                } else {
+                    card.style.display = '';      // Show shows that match the selected date
+                }
+            });
         }
-
-        // Simulated function to handle booking
-        function bookShow(showId) {
-            alert(`Booking for show ID: ${showId}`);
-            // Here, you would make an API request to book the show
-        }
-    </script>  -->
+    </script>
 </body>
 </html>

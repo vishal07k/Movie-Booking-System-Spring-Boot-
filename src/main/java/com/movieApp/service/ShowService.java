@@ -15,6 +15,7 @@ import com.movieApp.entities.Theater;
 import com.movieApp.entities.TheaterSeat;
 import com.movieApp.enums.SeatType;
 import com.movieApp.exceptions.MovieDoesNotExists;
+import com.movieApp.exceptions.MovieIsInactive;
 import com.movieApp.exceptions.NotNullException;
 import com.movieApp.exceptions.ShowDoesNotExists;
 import com.movieApp.exceptions.TheaterDoesNotExists;
@@ -57,6 +58,9 @@ public class ShowService {
 		
 		Theater theater = theaterOpt.get();
 		Movie movie = movieOpt.get();
+		if(!movie.isActive()) {
+			throw new MovieIsInactive();
+		}
 		
 		show.setMovie(movie);
 		show.setTheater(theater);
@@ -139,7 +143,7 @@ public class ShowService {
 		return seatsByShow;
 	}
 	
-	public  int totalPrice = 0;
+	int ticketPrice = 0;
 	
 	public List<String> getOriginalName(List<String> reserveSeats){
 		
@@ -149,7 +153,7 @@ public class ShowService {
 		
 		List<ShowSeat> Original = new ArrayList<>();
 		
-		
+		int totalPrice = 0;
 		
 		for(String strId : reserveSeats) {
 			int id = Integer.parseInt(strId);
@@ -172,8 +176,14 @@ public class ShowService {
 			
 		}
 		
+		ticketPrice = totalPrice;
+		
 		return list;
 		
+	}
+	
+	public int getTotalPrice() {
+		return this.ticketPrice;
 	}
 	
 	public Show getShowById(int id) {

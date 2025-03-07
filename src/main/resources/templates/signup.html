@@ -6,102 +6,154 @@
 <link rel="stylesheet" href="#" th:href="@{/css/bootstrap.css}" />
 <link rel="stylesheet" href="#" th:href="@{/css/all.css}" />
 <link rel="stylesheet" href="#" th:href="@{/css/index.css}" />
+
+<style>
+    body {
+        background-color:  #222;
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+    }
+    .register-form {
+        background: #222;
+        padding: 50px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(255, 0, 0, 0.3);
+        max-width: 700px;
+        margin: 50px auto;
+        transition: 0.3s ease-in-out;
+        border: 1px solid #ff0000;
+    }
+    .register-form:hover {
+        box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
+    }
+    .register-form .login-head {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .register-form h3 {
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .register-form .form-group label {
+        font-weight: bold;
+        color: white;
+    }
+    .register-form .form-control {
+        border-radius: 8px;
+        background: #333;
+        color: white;
+        border: 1px solid #ff4d4d;
+        padding: 12px;
+        transition: 0.3s;
+    }
+    .register-form .form-control:focus {
+        border-color: #ff0000;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+    }
+    .register-form button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #ff0000, #ff4d4d);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 10px rgba(255, 0, 0, 0.5);
+    }
+    .register-form button:hover {
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        transform: scale(1.05);
+    }
+    .login-register {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .login-register a {
+        color: #ff4d4d;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .login-register a:hover {
+        color: #ff0000;
+    }
+    .navbar {
+        background: #111;
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        font-weight: bold;
+        transition: 0.3s;
+        border-radius: 5px;
+    }
+    .navbar a:hover {
+        background: #ff0000;
+        color: white;
+    }
+</style>
 </head>
 <body>
 
-	<div class="container base">
-		<div class="row base-row">
-			<div class="col-3 menu">
-				<div class="logo mb-5 text-center text-dark  pt-1 pb-1">
-					<h4>BookYourShow</h4>
-				</div>
-				<ul class="list">
-					<li><a th:href="@{/}"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</a></li>
-					<li><a th:href="@{/signUp}"><i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register</a></li>
-					<li><a th:href="@{/login}"><i class="fas fa-users"></i>&nbsp;&nbsp;Login</a></li>
-					<li><a href=""><i class="fas fa-address-card"></i>&nbsp;&nbsp;About
-							us</a></li>
-					<li><a href=""><i class="fas fa-phone-square-alt"></i>&nbsp;&nbsp;Contact
-							us</a></li>
-				</ul>
-			</div>
+    <nav class="navbar">
+        <a th:href="@{/}"><i class="fas fa-home"></i>&nbsp;Home</a>
+        <a th:href="@{/signUp}"><i class="fas fa-user-plus"></i>&nbsp;Register</a>
+        <a th:href="@{/login}"><i class="fas fa-users"></i>&nbsp;Login</a>
+        <a href=""><i class="fas fa-address-card"></i>&nbsp;About us</a>
+        <a href=""><i class="fas fa-phone-square-alt"></i>&nbsp;Contact us</a>
+    </nav>
 
-			<div class="col-9 register-form">
-				<div class="login">
-					<form th:action="@{/user/addNew}" th:object="${UserRequest}"
-						method="POST">
-						<div class="login-head">
-							<h3>Register</h3>
-						</div>
-						<div th:if="${message}" class="alert alert-success">
-						<p th:text="${message}"></p>
-						<!-- <th:block th:text="${#session.removeAttribute('message')}"></th:block> -->
-						</div>
-						<div class="form-group">
-							<label for="exampleInputName">Name</label> <input type="text"
-								class="form-control" id="exampleInputName"
-								placeholder="Enter name" name="name" required="required">
-
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputAge">Age</label> <input type="Number"
-								class="form-control" id="exampleInputAge" name="age"
-								placeholder="Enter Age" required="required">
-
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputAddress">Address</label> <input
-								type="Text" class="form-control" id="exampleInputAddress"
-								name="address" placeholder="Enter City" required="required">
-
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputMobile">Mobile No</label> <input
-								type="Number" class="form-control" id="exampleInputMobile"
-								name="mobileNo" placeholder="Enter Mobile Number"
-								required="required">
-
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputEmail1">Email address</label> <input
-								type="email" class="form-control" id="exampleInputEmail1"
-								name="emailId" placeholder="Enter email" required="required">
-
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputPassword1">Password</label> <input
-								type="password" class="form-control" id="exampleInputPassword1"
-								placeholder="Password" name="password" required="required">
-						</div>
-						<div class="form-group">
-							<label for="exampleInputGender">Gender</label> <select
-								name="gender">
-								<option value="MALE">MALE</option>
-								<option value="FEMALE">FEMALE</option>
-							</select>
-
-						</div>
-
-						<button type="submit" class="btn btn-primary">Submit</button>
-					</form>
-					<div class="login-register">
-						<p>
-							Already register <span><a th:href="@{/signIn}">click
-									here</a></span>
-						</p>
-					</div>
-					
-				</div>
-
-
-			</div>
-		</div>
-
-	</div>
+   <!--  <div class="container base"> -->
+        <div class="register-form">
+            <!-- <div class="login"> -->
+                <form th:action="@{/user/addNew}" th:object="${UserRequest}" method="POST">
+                    <div class="login-head">
+                        <h3>Register</h3>
+                    </div>
+                    <div th:if="${message}" class="alert alert-success">
+                        <p th:text="${message}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputName">Name</label>
+                        <input type="text" class="form-control" id="exampleInputName" placeholder="Enter name" name="name" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputAge">Age</label>
+                        <input type="Number" class="form-control" id="exampleInputAge" name="age" placeholder="Enter Age" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputAddress">Address</label>
+                        <input type="Text" class="form-control" id="exampleInputAddress" name="address" placeholder="Enter City" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputMobile">Mobile No</label>
+                        <input type="Number" class="form-control" id="exampleInputMobile" name="mobileNo" placeholder="Enter Mobile Number" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="emailId" placeholder="Enter email" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" required="required">
+                    </div>
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+                <div class="login-register">
+                    <p>Already registered? <span><a th:href="@{/login}">Click here</a></span></p>
+                </div>
+            </div>
+      <!--   </div> -->
+   <!--  </div> -->
 </body>
 </html>
